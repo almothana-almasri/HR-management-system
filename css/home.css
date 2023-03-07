@@ -1,5 +1,6 @@
 body {
-    background-image: url("assets/2053097.png");
+    background-color: #000000;
+    background-image: url("/assets/2053097.png");
     background-repeat: no-repeat;
     background-size: cover;
     height: 95vh;
