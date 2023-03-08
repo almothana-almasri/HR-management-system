@@ -1,11 +1,12 @@
 'use strict'
 
-function Employee(employeeId, fullName, department, level, imageUrl, ) {
+function Employee(employeeId, fullName, department, level, imageUrl) {
     this.employeeId = employeeId
     this.fullName = fullName
     this.department = department
     this.level = level
     this.imageUrl = imageUrl
+    this.salary = this.calculateSalary
   }
   const employees = [
     new Employee(1000, "Ghazi Samer", "Administration", "Senior", "./assets/Ghazi-Samer.png"),
