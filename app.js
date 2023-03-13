@@ -9,13 +9,13 @@ function Employee(employeeId, fullName, department, level, imageUrl) {
     this.salary = this.calculateSalary
   }
   const employees = [
-    new Employee(1000, "Ghazi Samer", "Administration", "Senior", "./assets/Ghazi-Samer.png"),
-    new Employee(1001, "Lana Ali", "Finance", "Senior","./assets/Lana-Ali.png"),
-    new Employee(1002, "Tamara Ayoub", "Marketing", "Senior","./assets/Tamara-Ayoub.png"),
-    new Employee(1003, "Safi Walid", "Administration", "Mid-Senior","./assets/Safi-Walid.png"),
-    new Employee(1004, "Omar Zaid", "Development", "Senior","./assets/Omar-Zaid.png"),
-    new Employee(1005, "Rana Saleh", "Development", "Junior","./assets/Rana-Saleh.png"),
-    new Employee(1006, "Hadi Ahmad", "Finance", "Mid-Senior","./assets/Hadi-Ahmad.png")
+    new Employee(1000, "Ghazi Samer", "Administration", "Senior", "assets/Ghazi.jpg"),
+    new Employee(1001, "Lana Ali", "Finance", "Senior","assets/Lana.jpg"),
+    new Employee(1002, "Tamara Ayoub", "Marketing", "Senior","assets/Tamara.jpg"),
+    new Employee(1003, "Safi Walid", "Administration", "Mid-Senior","assets/Safi.jpg"),
+    new Employee(1004, "Omar Zaid", "Development", "Senior","assets/Omar.jpg"),
+    new Employee(1005, "Rana Saleh", "Development", "Junior","assets/Rana.jpg"),
+    new Employee(1006, "Hadi Ahmad", "Finance", "Mid-Senior","assets/Hadi.jpg")
   ]
   Employee.prototype.calculateSalary = function(){
     let min, max
@@ -39,10 +39,7 @@ function Employee(employeeId, fullName, department, level, imageUrl) {
     document.write(`<h1>Employee name: ${this.fullName} </h1>`)
     document.write(`<h2>salary = ${this.salary} </h2>`)
 }
-// employees.forEach(function(Employee) {
-//     Employee.calculateSalary()
-//     Employee.render()
-//   })
+
 
 /* Events Assigmnent JS */
 
@@ -67,6 +64,12 @@ function submitHandler(event){
   newEmployee.render2();
   form.reset()
 }
+
+
+const employeeList = document.createElement("div");
+employeeList.classList.add("employee-list");
+const main = document.getElementById("main");
+
 
 Employee.prototype.render2 = function(){
   const employeeCard = document.createElement("div");
@@ -96,9 +99,11 @@ Employee.prototype.render2 = function(){
   employeeCard.appendChild(level);
   employeeCard.appendChild(salary);
   employeeCard.appendChild(employeeId);
-
-  const main = document.getElementById("main")
-  main.appendChild(employeeCard);
+  employeeList.appendChild(employeeCard);
+  main.appendChild(employeeList);
 }
-
+employees.forEach(function(Employee) {
+  Employee.calculateSalary();
+  Employee.render2();
+})
 /* Events Assigmnent JS */
