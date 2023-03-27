@@ -9,7 +9,7 @@ function Employee(employeeId, fullName, department, level, imageUrl) {
   this.salary = this.calculateSalary
 }
 const employees = [
-  new Employee(1000, "Ghazi Samer", "Administration", "Senior", "assets/Ghazi.jpg"),
+  new Employee(1000, "Ghazi Samer", "Administration", "Senior", "assets/Ghazi.jpg",),
   new Employee(1001, "Lana Ali", "Finance", "Senior", "assets/Lana.jpg"),
   new Employee(1002, "Tamara Ayoub", "Marketing", "Senior", "assets/Tamara.jpg"),
   new Employee(1003, "Safi Walid", "Administration", "Mid-Senior", "assets/Safi.jpg"),
@@ -40,9 +40,6 @@ Employee.prototype.render = function () {
   document.write(`<h2>salary = ${this.salary} </h2>`)
 }
 
-
-/* Events Assigmnent JS */
-
 const generateID = () => {
   let uniqueFourDigitsID = Math.floor(1000 + Math.random() * 9000);
   return uniqueFourDigitsID
@@ -50,7 +47,6 @@ const generateID = () => {
 
 const form = document.getElementById("form")
 form.addEventListener("submit", submitHandler)
-let employees2 = []
 
 function submitHandler(event) {
   event.preventDefault();
@@ -60,42 +56,54 @@ function submitHandler(event) {
   const level = document.getElementById("level").value
   const imageUrl = document.getElementById("image-url").value
   const employeeId = generateID();
-  const newEmployee = new Employee(employeeId, fullName, department, level, imageUrl);
+  const newEmployee = new Employee(employeeId, fullName, department, level, imageUrl, this.calculateSalary);
   newEmployee.calculateSalary();
-  employees2.push(newEmployee);
-  // saveEmployeesToLocalStorage(employees2); // Local Storage Lab09 //
-  newEmployee.render2();
+  employees.push(newEmployee);
   form.reset()
-  saveData(employees2)
+  localStorage.setItem('employees', JSON.stringify(employees));
+  getEmployeesFromStorage()
 }
 
+function getEmployeesFromStorage() {
+  let retrievedEmployeeArr = localStorage.getItem('employees');
+  let retrievedEmployeeObj = JSON.parse(retrievedEmployeeArr);
+
+  if (retrievedEmployeeArr !== null) {
+    let employees = JSON.parse(localStorage.getItem('employees'));
+    employees.forEach(function (employee, i) {
+      if (i > 6) {
+        render2(employee);
+      }
+    })
+  }
+  return retrievedEmployeeObj;
+}
 
 const employeeList = document.createElement("div");
 employeeList.classList.add("employee-list");
 const main = document.getElementById("main");
 
-
-Employee.prototype.render2 = function () {
+function render2(Employee) {
   const employeeCard = document.createElement("div");
   employeeCard.classList.add("employee-card");
 
   const image = document.createElement("img");
-  image.setAttribute("src", this.imageUrl);
+  image.setAttribute("src", Employee.imageUrl);
 
   const fullName = document.createElement("h3");
-  fullName.textContent = this.fullName;
+  fullName.textContent = Employee.fullName;
 
   const department = document.createElement("p");
-  department.textContent = `Department: ${this.department}`;
+  department.textContent = `Department: ${Employee.department}`;
 
   const level = document.createElement("p");
-  level.textContent = `Level: ${this.level}`;
+  level.textContent = `Level: ${Employee.level}`;
 
   const salary = document.createElement("p");
-  salary.textContent = `Salary: $${this.salary}`;
+  salary.textContent = `Salary: $${Employee.salary}`;
 
   const employeeId = document.createElement("p");
-  employeeId.textContent = `ID: ${this.employeeId}`;
+  employeeId.textContent = `ID: ${Employee.employeeId}`;
 
   employeeCard.appendChild(image);
   employeeCard.appendChild(fullName);
@@ -106,54 +114,9 @@ Employee.prototype.render2 = function () {
   employeeList.appendChild(employeeCard);
   main.appendChild(employeeList);
 }
-employees.forEach(function (Employee) {
-  Employee.calculateSalary();
-  Employee.render2();
+
+employees.forEach(function (employee) {
+  employee.calculateSalary();
+  render2(employee);
 })
-/* Events Assigmnent JS */
-// Local Storage Lab09 //
-function saveData(data) {
-  let stringArr = JSON.stringify(data);
-  localStorage.setItem('employees2Storage', stringArr);
-}
-let employees2StorageArr = []
-function getData() {
-  let retrievedArr = localStorage.getItem('employees2Storage');
-  employees2StorageArr = JSON.parse(retrievedArr);
-}
-getData();
-if (employees2StorageArr != null) {
-  for (let i = 0; i < employees2StorageArr.length; i++) {
-    new Employee(employees2StorageArr[i].employeeId, employees2StorageArr[i].fullName, employees2StorageArr[i].department, employees2StorageArr[i].level, employees2StorageArr[i].imageUrl)
-
-    const employeeCard = document.createElement("div");
-    employeeCard.classList.add("employee-card");
-
-    const image = document.createElement("img");
-    image.setAttribute("src", employees2StorageArr.imageUrl);
-
-    const fullName = document.createElement("h3");
-    fullName.textContent = employees2StorageArr.fullName;
-
-    const department = document.createElement("p");
-    department.textContent = `Department: ${employees2StorageArr.department}`;
-
-    const level = document.createElement("p");
-    level.textContent = `Level: ${employees2StorageArr.level}`;
-
-    const salary = document.createElement("p");
-    salary.textContent = `Salary: $${employees2StorageArr.salary}`;
-
-    const employeeId = document.createElement("p");
-    employeeId.textContent = `ID: ${employees2StorageArr.employeeId}`;
-
-    employeeCard.appendChild(image);
-    employeeCard.appendChild(fullName);
-    employeeCard.appendChild(department);
-    employeeCard.appendChild(level);
-    employeeCard.appendChild(salary);
-    employeeCard.appendChild(employeeId);
-    employeeList.appendChild(employeeCard);
-    main.appendChild(employeeList);
-  }
-}
+getEmployeesFromStorage()
